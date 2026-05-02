@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PM Legacy — Portal Oficial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --bg2: #111114;
+      --bg3: #18181c;
+      --border: rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.13);
+      --gold: #c9a84c;
+      --gold2: #e8c96a;
+      --red: #c0392b;
+      --text: #e8e6df;
+      --text2: #9a9890;
+      --text3: #5a5855;
+      --font-head: 'Bebas Neue', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.6; min-height: 100vh; overflow-x: hidden; }
+
+    /* SCANLINE OVERLAY */
+    body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); pointer-events: none; z-index: 9999; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,11,0.95); border-bottom: 1px solid var(--border2); backdrop-filter: blur(10px); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-logo { font-family: var(--font-head); font-size: 22px; letter-spacing: 3px; color: var(--gold); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+    .nav-logo span { font-size: 11px; font-family: var(--font-mono); color: var(--text3); letter-spacing: 2px; display: block; line-height: 1; }
+    .nav-links { display: flex; gap: 2px; }
+    .nav-link { font-family: var(--font-body); font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text2); padding: 8px 14px; border: 1px solid transparent; border-radius: 3px; cursor: pointer; transition: all 0.2s; background: none; }
+    .nav-link:hover, .nav-link.active { color: var(--gold); border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.05); }
+    .nav-user { display: flex; align-items: center; gap: 10px; font-size: 13px; font-family: var(--font-mono); color: var(--text3); }
+    .nav-badge { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); padding: 3px 10px; border-radius: 2px; font-size: 11px; letter-spacing: 1px; }
+    .btn-logout { background: none; border: 1px solid rgba(192,57,43,0.4); color: #e57373; padding: 4px 12px; border-radius: 3px; font-size: 12px; font-family: var(--font-mono); cursor: pointer; letter-spacing: 1px; transition: all 0.2s; }
+    .btn-logout:hover { background: rgba(192,57,43,0.15); }
+
+    /* PAGES */
+    .page { display: none; padding-top: 60px; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* LOGIN PAGE */
+    #page-login { display: flex; align-items: center; justify-content: center; padding-top: 0; background: var(--bg); }
+    .login-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 60%); pointer-events: none; }
+    .login-grid { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.4; pointer-events: none; }
+    .login-box { position: relative; z-index: 2; width: 100%; max-width: 420px; padding: 2rem; }
+    .login-emblem { text-align: center; margin-bottom: 2rem; }
+    .emblem-ring { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--gold); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; position: relative; }
+    .emblem-ring::before { content: ''; position: absolute; inset: 4px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.3); }
+    .emblem-star { font-size: 36px; line-height: 1; }
+    .login-title { font-family: var(--font-head); font-size: 36px; letter-spacing: 6px; color: var(--gold); }
+    .login-sub { font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px; color: var(--text3); margin-top: 4px; }
+    .login-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px; padding: 2rem; }
+    .login-card h2 { font-family: var(--font-mono); font-size: 12px; letter-spacing: 2px; color: var(--text3); margin-bottom: 1.5rem; text-transform: uppercase; }
+    .field { margin-bottom: 1.25rem; }
+    .field label { display: block; font-size: 11px; font-family: var(--font-mono); letter-spacing: 2px; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; }
+    .field input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-family: var(--font-mono); font-size: 14px; outline: none; transition: border-color 0.2s; }
+    .field input:focus { border-color: var(--gold); }
+    .btn-primary { width: 100%; background: var(--gold); color: #0a0a0b; border: none; padding: 12px; font-family: var(--font-head); font-size: 18px; letter-spacing: 3px; cursor: pointer; border-radius: 3px; transition: background 0.2s; }
+    .btn-primary:hover { background: var(--gold2); }
+    .login-info { margin-top: 1rem; font-size: 12px; font-family: var(--font-mono); color: var(--text3); text-align: center; line-height: 1.8; }
+    .login-error { background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.4); color: #e57373; padding: 10px 14px; border-radius: 3px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; margin-bottom: 1rem; display: none; }
+
+    /* SECTION WRAPPER */
+    .section { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+    .section-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; }
+    .section-head h2 { font-family: var(--font-head); font-size: 32px; letter-spacing: 4px; color: var(--text); }
+    .section-head .line { flex: 1; height: 1px; background: var(--border2); }
+    .section-head .tag { font-family: var(--font-mono); font-size: 11px; color: var(--text3); letter-spacing: 2px; }
+
+    /* HOME PAGE */
+    .hero { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .hero-left {}
+    .hero-kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px; color: var(--gold); margin-bottom: 1rem; }
+    .hero-title { font-family: var(--font-head); font-size: 72px; line-height: 0.9; letter-spacing: 4px; color: var(--text); margin-bottom: 1rem; }
+    .hero-title span { color: var(--gold); }
+    .hero-sub { font-size: 15px; color: var(--text2); line-height: 1.7; max-width: 420px; }
+    .hero-divider { width: 60px; height: 2px; background: var(--gold); margin: 1.5rem 0; }
+    .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+    .stat-box { background: var(--bg2); border: 1px solid var(--border); padding: 1rem; border-radius: 3px; text-align: center; }
+    .stat-num { font-family: var(--font-head); font-size: 36px; color: var(--gold); letter-spacing: 2px; }
+    .stat-label { font-family: var(--font-mono); font-size: 10px; color: var(--text3); letter-spacing: 2px; margin-top: 2px; }
+    .hero-right { display: flex; flex-direction: column; gap: 1px; }
+    .alert-box { background: var(--bg2); border-left: 3px solid var(--gold); padding: 1rem 1.25rem; font-family: var(--font-mono); font-size: 12px; }
+    .alert-box.red { border-left-color: var(--red); }
+    .alert-time { color: var(--text3); font-size: 10px; margin-bottom: 4px; letter-spacing: 1px; }
+    .alert-text { color: var(--text); }
+    .alert-box + .alert-box { border-top: 1px solid var(--border); }
+    .home-grid { max-width: 1100px; margin: 0 auto; padding: 0 2rem 4rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+    .home-card { background: var(--bg); padding: 2rem; cursor: pointer; transition: background 0.2s; }
+    .home-card:hover { background: var(--bg2); }
+    .home-card-icon { font-size: 28px; margin-bottom: 1rem; }
+    .home-card h3 { font-family: var(--font-head); font-size: 20px; letter-spacing: 2px; color: var(--gold); margin-bottom: 0.5rem; }
+    .home-card p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+    /* RANKING PAGE */
+    .rank-filters { display: flex; gap: 8px; margin-bottom: 2rem; flex-wrap: wrap; }
+    .rank-filter { background: var(--bg2); border: 1px solid var(--border2); color: var(--text2); padding: 6px 16px; border-radius: 2px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; }
+    .rank-filter.active, .rank-filter:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.07); }
+    .rank-table { width: 100%; border-collapse: collapse; }
+    .rank-table th { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: var(--text3); padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border2); text-transform: uppercase; }
+    .rank-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 15px; }
+    .rank-table tr:hover td { background: var(--bg2); }
+    .rank-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 2px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; white-space: nowrap; }
+    .rank-1 { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); color: var(--gold); }
+    .rank-2 { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); color: #b8a060; }
+    .rank-3 { background: rgba(150,150,150,0.1); border: 1px solid rgba(150,150,150,0.25); color: #aaa; }
+    .rank-4 { background: rgba(100,120,180,0.1); border: 1px solid rgba(100,120,180,0.25); color: #8899cc; }
+    .rank-5 { background: rgba(80,160,100,0.1); border: 1px solid rgba(80,160,100,0.25); color: #7ab890; }
+    .rank-pip { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+    .officer-name { font-weight: 600; color: var(--text); }
+    .officer-id { font-family: var(--font-mono); font-size: 12px; color: var(--text3); }
+    .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+    .status-on { background: #4caf50; }
+    .status-off { background: #555; }
+    .btn-add { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.35); color: var(--gold); padding: 9px 20px; border-radius: 3px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; margin-bottom: 1.5rem; }
+    .btn-add:hover { background: rgba(201,168,76,0.2); }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px; padding: 2rem; width: 100%; max-width: 500px; }
+    .modal h3 { font-family: var(--font-head); font-size: 24px; letter-spacing: 3px; color: var(--gold); margin-bottom: 1.5rem; }
+    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .modal-grid .field { margin-bottom: 0; }
+    .field select { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-family: var(--font-mono); font-size: 13px; outline: none; cursor: pointer; }
+    .field select:focus { border-color: var(--gold); }
+    .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .btn-secondary { flex: 1; background: transparent; border: 1px solid var(--border2); color: var(--text2); padding: 10px; border-radius: 3px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { border-color: var(--text2); }
+    .btn-confirm { flex: 1; background: var(--gold); border: none; color: #0a0a0b; padding: 10px; border-radius: 3px; font-family: var(--font-head); font-size: 16px; letter-spacing: 2px; cursor: pointer; transition: background 0.2s; }
+    .btn-confirm:hover { background: var(--gold2); }
+
+    /* RULES PAGE */
+    .rules-nav { display: flex; flex-direction: column; gap: 2px; position: sticky; top: 80px; }
+    .rules-link { font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; color: var(--text3); padding: 8px 12px; border-left: 2px solid var(--border); cursor: pointer; transition: all 0.2s; }
+    .rules-link:hover, .rules-link.active { color: var(--gold); border-left-color: var(--gold); background: rgba(201,168,76,0.05); }
+    .rules-layout { display: grid; grid-template-columns: 220px 1fr; gap: 3rem; }
+    .rule-section { margin-bottom: 3rem; }
+    .rule-section h3 { font-family: var(--font-head); font-size: 26px; letter-spacing: 3px; color: var(--gold); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border2); }
+    .rule-item { display: flex; gap: 1rem; margin-bottom: 1rem; padding: 1rem; background: var(--bg2); border-radius: 3px; border: 1px solid var(--border); }
+    .rule-num { font-family: var(--font-head); font-size: 24px; color: var(--text3); min-width: 36px; line-height: 1; }
+    .rule-text { font-size: 15px; color: var(--text2); line-height: 1.7; }
+    .rule-text strong { color: var(--text); }
+    .rules-placeholder { background: var(--bg2); border: 1px dashed var(--border2); border-radius: 4px; padding: 3rem; text-align: center; }
+    .rules-placeholder p { font-family: var(--font-mono); font-size: 13px; color: var(--text3); letter-spacing: 1px; }
+
+    /* RECRUTAMENTO */
+    .recruit-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: start; }
+    .recruit-info h3 { font-family: var(--font-head); font-size: 28px; letter-spacing: 3px; color: var(--gold); margin-bottom: 1rem; }
+    .recruit-info p { font-size: 15px; color: var(--text2); line-height: 1.8; margin-bottom: 1rem; }
+    .req-list { list-style: none; margin-top: 1.5rem; }
+    .req-list li { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text2); }
+    .req-list li::before { content: '▸'; color: var(--gold); flex-shrink: 0; }
+    .recruit-form { background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px; padding: 2rem; }
+    .recruit-form h3 { font-family: var(--font-head); font-size: 22px; letter-spacing: 3px; color: var(--text); margin-bottom: 1.5rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .field textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-family: var(--font-mono); font-size: 13px; outline: none; resize: vertical; min-height: 80px; transition: border-color 0.2s; }
+    .field textarea:focus { border-color: var(--gold); }
+    .form-success { display: none; background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.3); border-radius: 3px; padding: 1.5rem; text-align: center; }
+    .form-success p { font-family: var(--font-mono); font-size: 13px; color: #81c784; letter-spacing: 1px; line-height: 1.8; }
+
+    /* PENDING USERS (ADMIN) */
+    .pending-table { width: 100%; border-collapse: collapse; }
+    .pending-table th { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: var(--text3); padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border2); text-transform: uppercase; }
+    .pending-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .btn-approve { background: rgba(76,175,80,0.15); border: 1px solid rgba(76,175,80,0.4); color: #81c784; padding: 5px 14px; border-radius: 3px; font-family: var(--font-mono); font-size: 11px; cursor: pointer; transition: all 0.2s; }
+    .btn-approve:hover { background: rgba(76,175,80,0.3); }
+    .btn-reject { background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.35); color: #e57373; padding: 5px 14px; border-radius: 3px; font-family: var(--font-mono); font-size: 11px; cursor: pointer; transition: all 0.2s; margin-left: 6px; }
+    .btn-reject:hover { background: rgba(192,57,43,0.25); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-family: var(--font-mono); font-size: 11px; color: var(--text3); letter-spacing: 2px; }
+
+    /* RELATÓRIOS */
+    .report-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2.5rem; align-items: start; }
+    .report-form-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px; padding: 2rem; }
+    .report-form-card h3 { font-family: var(--font-head); font-size: 22px; letter-spacing: 3px; color: var(--text); margin-bottom: 1.5rem; }
+    .score-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .score-field label { display: block; font-size: 11px; font-family: var(--font-mono); letter-spacing: 2px; color: var(--text3); margin-bottom: 8px; text-transform: uppercase; }
+    .stars { display: flex; gap: 4px; }
+    .star { width: 28px; height: 28px; border: 1px solid var(--border2); border-radius: 3px; background: var(--bg3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.15s; color: var(--text3); }
+    .star.active { background: rgba(201,168,76,0.2); border-color: var(--gold); color: var(--gold); }
+    .star:hover { border-color: rgba(201,168,76,0.5); }
+    .report-no-perms { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.25); border-radius: 4px; padding: 2rem; text-align: center; }
+    .report-no-perms p { font-family: var(--font-mono); font-size: 13px; color: #e57373; letter-spacing: 1px; line-height: 1.8; }
+    .report-list { display: flex; flex-direction: column; gap: 1px; }
+    .report-card { background: var(--bg2); border: 1px solid var(--border); padding: 1.5rem; border-radius: 3px; cursor: pointer; transition: border-color 0.2s; }
+    .report-card:hover { border-color: var(--border2); }
+    .report-card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+    .report-card-title { font-family: var(--font-head); font-size: 18px; letter-spacing: 2px; color: var(--text); }
+    .report-card-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text3); text-align: right; line-height: 1.8; }
+    .report-scores { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.75rem; }
+    .report-score-pill { background: var(--bg3); border: 1px solid var(--border); padding: 4px 10px; border-radius: 2px; font-family: var(--font-mono); font-size: 11px; color: var(--text2); display: flex; gap: 6px; align-items: center; }
+    .score-stars-mini { color: var(--gold); letter-spacing: -1px; }
+    .report-obs { margin-top: 0.75rem; font-size: 13px; color: var(--text3); font-style: italic; border-top: 1px solid var(--border); padding-top: 0.75rem; }
+    .report-detail-modal { max-width: 600px; }
+    .detail-score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .detail-score-item { background: var(--bg3); border: 1px solid var(--border); padding: 1rem; border-radius: 3px; }
+    .detail-score-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; color: var(--text3); margin-bottom: 6px; }
+    .detail-score-stars { font-size: 18px; color: var(--gold); letter-spacing: 2px; }
+    .detail-score-num { font-family: var(--font-head); font-size: 24px; color: var(--gold); }
+    .report-avg-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); padding: 6px 14px; border-radius: 3px; font-family: var(--font-head); font-size: 20px; color: var(--gold); letter-spacing: 2px; margin-bottom: 1.5rem; }
+    .no-reports { text-align: center; padding: 3rem 1rem; font-family: var(--font-mono); font-size: 13px; color: var(--text3); letter-spacing: 1px; }
+    .report-tabs { display: flex; gap: 2px; margin-bottom: 1.5rem; }
+    .report-tab { font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; color: var(--text3); padding: 8px 16px; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; background: none; transition: all 0.2s; }
+    .report-tab.active { color: var(--gold); border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.07); }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem 2rem; }
+      .hero-title { font-size: 52px; }
+      .home-grid { grid-template-columns: 1fr; }
+      .rules-layout { grid-template-columns: 1fr; }
+      .recruit-layout { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .modal-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="page-login" class="page active">
+  <div class="login-bg"></div>
+  <div class="login-grid"></div>
+  <div class="login-box">
+    <div class="login-emblem">
+      <div class="emblem-ring"><div class="emblem-star">★</div></div>
+      <div class="login-title">PM LEGACY</div>
+      <div class="login-sub">POLÍCIA MILITAR — PORTAL RESTRITO</div>
+    </div>
+    <div class="login-card">
+      <h2>// AUTENTICAÇÃO NECESSÁRIA</h2>
+      <div class="login-error" id="login-error">CREDENCIAIS INVÁLIDAS — ACESSO NEGADO</div>
+      <div class="field">
+        <label>Usuário</label>
+        <input type="text" id="login-user" placeholder="seu.usuario" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label>Senha</label>
+        <input type="password" id="login-pass" placeholder="••••••••" />
+      </div>
+      <button class="btn-primary" onclick="doLogin()">ACESSAR PORTAL</button>
+      <div class="login-info">
+        Acesso restrito a membros autorizados.<br>
+        Solicite credenciais ao Comando da PM.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR (hidden until logged in) -->
+<nav id="navbar" style="display:none">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">
+      ★ <div><span>// PORTAL OFICIAL</span>PM LEGACY</div>
+    </div>
+    <div class="nav-links">
+      <button class="nav-link active" onclick="showPage('home')">Início</button>
+      <button class="nav-link" onclick="showPage('ranking')">Efetivo</button>
+      <button class="nav-link" onclick="showPage('rules')">Regulamentos</button>
+      <button class="nav-link" onclick="showPage('recruit')">Recrutamento</button>
+      <button class="nav-link" id="nav-reports" onclick="showPage('reports')" style="display:none">Relatórios</button>
+      <button class="nav-link admin-only" onclick="showPage('admin')" style="display:none">Admin</button>
+    </div>
+    <div class="nav-user">
+      <span id="nav-username" style="color:var(--text2)"></span>
+      <span class="nav-badge" id="nav-rank"></span>
+      <button class="btn-logout" onclick="doLogout()">SAIR</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-kicker">// SERVIDOR LEGACY — CORPORAÇÃO OFICIAL</div>
+      <div class="hero-title">POLÍCIA<br><span>MILITAR</span></div>
+      <div class="hero-divider"></div>
+      <p class="hero-sub">Servir e proteger é nossa missão. A PM Legacy mantém a ordem e a lei no servidor, garantindo uma experiência de roleplay justa e imersiva para todos os cidadãos.</p>
+      <div class="hero-stats">
+        <div class="stat-box"><div class="stat-num" id="stat-total">0</div><div class="stat-label">EFETIVO</div></div>
+        <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">PATENTES</div></div>
+        <div class="stat-box"><div class="stat-num">24/7</div><div class="stat-label">OPERAÇÃO</div></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--text3);padding:10px 0 6px;">// BOLETIM DE SERVIÇO</div>
+      <div class="alert-box"><div class="alert-time">AVISO GERAL</div><div class="alert-text">Bem-vindo ao portal oficial da PM Legacy. Mantenha suas informações atualizadas.</div></div>
+      <div class="alert-box"><div class="alert-time">REGIMENTO</div><div class="alert-text">O regimento interno está em elaboração. Em breve disponível na aba Regulamentos.</div></div>
+      <div class="alert-box red"><div class="alert-time">RECRUTAMENTO</div><div class="alert-text">Candidaturas abertas. Acesse a aba Recrutamento para se inscrever.</div></div>
+    </div>
+  </div>
+  <div class="home-grid">
+    <div class="home-card" onclick="showPage('ranking')">
+      <div class="home-card-icon">🪖</div>
+      <h3>EFETIVO</h3>
+      <p>Consulte todos os policiais, suas patentes e status de atividade no servidor.</p>
+    </div>
+    <div class="home-card" onclick="showPage('rules')">
+      <div class="home-card-icon">📋</div>
+      <h3>REGULAMENTOS</h3>
+      <p>Regras do servidor e regimento interno da Polícia Militar do Legacy.</p>
+    </div>
+    <div class="home-card" onclick="showPage('recruit')">
+      <div class="home-card-icon">🎯</div>
+      <h3>RECRUTAMENTO</h3>
+      <p>Quer fazer parte da PM? Preencha o formulário e aguarde avaliação do Comando.</p>
+    </div>
+    <div class="home-card" onclick="showPage('reports')" id="home-card-reports" style="display:none">
+      <div class="home-card-icon">📝</div>
+      <h3>RELATÓRIOS</h3>
+      <p>Avalie o desempenho dos seus subordinados diretos com fichas estruturadas.</p>
+    </div>
+  </div>
+  <footer>PM LEGACY — PORTAL OFICIAL — TODOS OS DIREITOS RESERVADOS</footer>
+</div>
+
+<!-- RANKING PAGE -->
+<div id="page-ranking" class="page">
+  <div class="section">
+    <div class="section-head">
+      <h2>EFETIVO</h2>
+      <div class="line"></div>
+      <span class="tag">// QUADRO DE PESSOAL</span>
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center;">
+      <div class="rank-filters" id="rank-filters">
+        <button class="rank-filter active" onclick="filterRank('all',this)">Todos</button>
+        <button class="rank-filter" onclick="filterRank('Coronel',this)">Coronel</button>
+        <button class="rank-filter" onclick="filterRank('Tenente-Coronel',this)">Ten.-Coronel</button>
+        <button class="rank-filter" onclick="filterRank('Major',this)">Major</button>
+        <button class="rank-filter" onclick="filterRank('Capitão',this)">Capitão</button>
+        <button class="rank-filter" onclick="filterRank('1° Tenente',this)">Tenentes</button>
+        <button class="rank-filter" onclick="filterRank('Subtenente',this)">Subtenente</button>
+        <button class="rank-filter" onclick="filterRank('Sargento',this)">Sargentos</button>
+        <button class="rank-filter" onclick="filterRank('Cabo',this)">Cabo</button>
+        <button class="rank-filter" onclick="filterRank('Soldado',this)">Soldado</button>
+      </div>
+    </div>
+    <div id="admin-add-btn" style="display:none">
+      <button class="btn-add" onclick="openAddModal()">+ ADICIONAR POLICIAL</button>
+    </div>
+    <table class="rank-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Patente</th>
+          <th>Status</th>
+          <th>Desde</th>
+          <th id="actions-col" style="display:none">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="rank-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- RULES PAGE -->
+<div id="page-rules" class="page">
+  <div class="section">
+    <div class="section-head">
+      <h2>REGULAMENTOS</h2>
+      <div class="line"></div>
+      <span class="tag">// NORMAS E CONDUTA</span>
+    </div>
+    <div class="rules-layout">
+      <div>
+        <nav class="rules-nav">
+          <div class="rules-link active" onclick="scrollToRule('regras-gerais',this)">Regras Gerais</div>
+          <div class="rules-link" onclick="scrollToRule('conduta',this)">Conduta</div>
+          <div class="rules-link" onclick="scrollToRule('punicoes',this)">Punições</div>
+          <div class="rules-link" onclick="scrollToRule('regimento',this)">Regimento PM</div>
+        </nav>
+      </div>
+      <div>
+        <div class="rule-section" id="regras-gerais">
+          <h3>REGRAS GERAIS DO SERVIDOR</h3>
+          <div class="rule-item"><div class="rule-num">01</div><div class="rule-text"><strong>Respeito mútuo:</strong> Todos os jogadores devem tratar uns aos outros com respeito dentro e fora do personagem.</div></div>
+          <div class="rule-item"><div class="rule-num">02</div><div class="rule-text"><strong>Roleplay:</strong> Mantenha o personagem em todo momento. Saídas de personagem (OOC) só são permitidas em situações necessárias.</div></div>
+          <div class="rule-item"><div class="rule-num">03</div><div class="rule-text"><strong>Metagaming:</strong> É proibido usar informações obtidas fora do jogo dentro do roleplay.</div></div>
+          <div class="rule-item"><div class="rule-num">04</div><div class="rule-text"><strong>Powergaming:</strong> É proibido forçar ações em outros jogadores sem dar chance de reação.</div></div>
+          <div class="rule-item"><div class="rule-num">05</div><div class="rule-text"><strong>Exploração de bugs:</strong> Qualquer bug encontrado deve ser reportado à administração imediatamente.</div></div>
+        </div>
+        <div class="rule-section" id="conduta">
+          <h3>CONDUTA POLICIAL</h3>
+          <div class="rule-item"><div class="rule-num">01</div><div class="rule-text"><strong>Uso de força:</strong> A força deve ser proporcional à situação. Violência excessiva é passível de punição.</div></div>
+          <div class="rule-item"><div class="rule-num">02</div><div class="rule-text"><strong>Abordagem:</strong> Todo suspeito tem direito à abordagem adequada. Siga o protocolo de abordagem da PM.</div></div>
+          <div class="rule-item"><div class="rule-num">03</div><div class="rule-text"><strong>Hierarquia:</strong> Respeite a cadeia de comando. Ordens superiores devem ser cumpridas, salvo se ilegais.</div></div>
+          <div class="rule-item"><div class="rule-num">04</div><div class="rule-text"><strong>Farda e equipamento:</strong> Use apenas os equipamentos autorizados para sua patente.</div></div>
+        </div>
+        <div class="rule-section" id="punicoes">
+          <h3>PUNIÇÕES</h3>
+          <div class="rule-item"><div class="rule-num">01</div><div class="rule-text"><strong>Advertência verbal:</strong> Para infrações leves e de primeira ocorrência.</div></div>
+          <div class="rule-item"><div class="rule-num">02</div><div class="rule-text"><strong>Suspensão temporária:</strong> Para infrações moderadas ou reincidência de infrações leves.</div></div>
+          <div class="rule-item"><div class="rule-num">03</div><div class="rule-text"><strong>Rebaixamento de patente:</strong> Para infrações graves.</div></div>
+          <div class="rule-item"><div class="rule-num">04</div><div class="rule-text"><strong>Expulsão:</strong> Para infrações gravíssimas ou acúmulo de punições.</div></div>
+        </div>
+        <div class="rule-section" id="regimento">
+          <h3>REGIMENTO INTERNO DA PM</h3>
+          <div class="rules-placeholder">
+            <p>⚙ REGIMENTO EM ELABORAÇÃO<br><br>O regimento interno da Polícia Militar do Legacy<br>está sendo desenvolvido pelo Comando.<br><br>Em breve disponível nesta seção.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECRUTAMENTO PAGE -->
+<div id="page-recruit" class="page">
+  <div class="section">
+    <div class="section-head">
+      <h2>RECRUTAMENTO</h2>
+      <div class="line"></div>
+      <span class="tag">// INGRESSO NA CORPORAÇÃO</span>
+    </div>
+    <div class="recruit-layout">
+      <div class="recruit-info">
+        <h3>JUNTE-SE À PM LEGACY</h3>
+        <p>A Polícia Militar do Legacy busca candidatos comprometidos com o roleplay de qualidade, disciplina e trabalho em equipe.</p>
+        <p>Preencha o formulário ao lado. Sua candidatura será avaliada pelo Comando e você receberá um retorno.</p>
+        <ul class="req-list">
+          <li>Ter no mínimo 13 anos de idade</li>
+          <li>Conta ativa no servidor Legacy</li>
+          <li>Conhecimento básico de roleplay</li>
+          <li>Disponibilidade para treinamentos</li>
+          <li>Microfone funcional</li>
+          <li>Comprometimento com a corporação</li>
+        </ul>
+      </div>
+      <div class="recruit-form">
+        <h3>FICHA DE CANDIDATURA</h3>
+        <div id="form-fields">
+          <div class="form-row">
+            <div class="field"><label>Nome do personagem</label><input type="text" id="f-nome" placeholder="Nome Sobrenome" /></div>
+            <div class="field"><label>Idade real</label><input type="number" id="f-idade" placeholder="Ex: 18" min="13" max="60" /></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label>Nick no servidor</label><input type="text" id="f-nick" placeholder="SeuNick" /></div>
+            <div class="field"><label>Discord</label><input type="text" id="f-discord" placeholder="usuario#0000" /></div>
+          </div>
+          <div class="field" style="margin-top:1rem"><label>Experiência com roleplay</label><textarea id="f-exp" placeholder="Descreva sua experiência com roleplay (servidores anteriores, tempo de jogo, etc.)"></textarea></div>
+          <div class="field"><label>Por que quer entrar na PM?</label><textarea id="f-motivo" placeholder="Explique sua motivação para ingressar na Polícia Militar..."></textarea></div>
+          <div class="field"><label>Disponibilidade de horário</label><input type="text" id="f-horario" placeholder="Ex: Noite e fins de semana" /></div>
+          <button class="btn-primary" style="margin-top:1rem" onclick="submitForm()">ENVIAR CANDIDATURA</button>
+        </div>
+        <div class="form-success" id="form-success">
+          <p>✔ CANDIDATURA ENVIADA<br><br>Sua ficha foi recebida com sucesso.<br>O Comando irá analisar e entrar em contato via Discord.<br><br>Aguarde.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RELATÓRIOS PAGE -->
+<div id="page-reports" class="page">
+  <div class="section">
+    <div class="section-head">
+      <h2>RELATÓRIOS</h2>
+      <div class="line"></div>
+      <span class="tag">// AVALIAÇÃO DE DESEMPENHO</span>
+    </div>
+
+    <!-- sem permissão -->
+    <div id="reports-no-perms" style="display:none">
+      <div class="report-no-perms">
+        <p>⛔ ACESSO RESTRITO<br><br>Somente oficiais com patente de Cabo ou superior<br>podem emitir relatórios de desempenho.</p>
+      </div>
+    </div>
+
+    <!-- com permissão -->
+    <div id="reports-content" style="display:none">
+      <div class="report-layout">
+        <!-- FORMULÁRIO -->
+        <div>
+          <div class="report-form-card">
+            <h3>NOVO RELATÓRIO</h3>
+            <div class="field">
+              <label>Policial avaliado</label>
+              <select id="r-avaliado" style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:3px;padding:10px 14px;color:var(--text);font-family:var(--font-mono);font-size:13px;outline:none;">
+                <option value="">Selecione...</option>
+              </select>
+            </div>
+            <div class="score-row" style="margin-top:1.25rem">
+              <div class="score-field">
+                <label>Desempenho geral</label>
+                <div class="stars" id="stars-desempenho" data-field="desempenho"></div>
+              </div>
+              <div class="score-field">
+                <label>Presença / Assiduidade</label>
+                <div class="stars" id="stars-presenca" data-field="presenca"></div>
+              </div>
+            </div>
+            <div class="score-row">
+              <div class="score-field">
+                <label>Conduta e disciplina</label>
+                <div class="stars" id="stars-conduta" data-field="conduta"></div>
+              </div>
+              <div class="score-field">
+                <label>Trabalho em equipe</label>
+                <div class="stars" id="stars-equipe" data-field="equipe"></div>
+              </div>
+            </div>
+            <div class="score-row">
+              <div class="score-field">
+                <label>Conhecimento técnico</label>
+                <div class="stars" id="stars-tecnico" data-field="tecnico"></div>
+              </div>
+              <div class="score-field">
+                <label>Iniciativa</label>
+                <div class="stars" id="stars-iniciativa" data-field="iniciativa"></div>
+              </div>
+            </div>
+            <div class="field" style="margin-top:0.5rem">
+              <label>Observações gerais</label>
+              <textarea id="r-obs" placeholder="Descreva pontos positivos, negativos e recomendações..." style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:3px;padding:10px 14px;color:var(--text);font-family:var(--font-mono);font-size:13px;outline:none;resize:vertical;min-height:90px;"></textarea>
+            </div>
+            <div class="field">
+              <label>Recomendação</label>
+              <select id="r-recomendacao" style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:3px;padding:10px 14px;color:var(--text);font-family:var(--font-mono);font-size:13px;outline:none;">
+                <option value="promover">Recomendar promoção</option>
+                <option value="manter">Manter na patente atual</option>
+                <option value="advertir">Aplicar advertência</option>
+                <option value="rebaixar">Recomendar rebaixamento</option>
+              </select>
+            </div>
+            <button class="btn-primary" style="margin-top:1rem;font-size:16px;letter-spacing:2px" onclick="submitReport()">ENVIAR RELATÓRIO</button>
+            <div id="report-success" style="display:none;margin-top:1rem;background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);border-radius:3px;padding:1rem;font-family:var(--font-mono);font-size:12px;color:#81c784;letter-spacing:1px;text-align:center;">
+              ✔ RELATÓRIO REGISTRADO COM SUCESSO
+            </div>
+          </div>
+        </div>
+
+        <!-- LISTA (só admin vê) -->
+        <div id="reports-list-panel">
+          <div class="report-tabs">
+            <button class="report-tab active" onclick="setReportTab('all',this)">Todos</button>
+            <button class="report-tab" onclick="setReportTab('mine',this)">Meus relatórios</button>
+          </div>
+          <div id="report-list-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT DETAIL MODAL -->
+<div class="modal-overlay" id="report-detail-modal">
+  <div class="modal report-detail-modal" style="max-width:600px;overflow-y:auto;max-height:90vh">
+    <div id="report-detail-content"></div>
+    <div class="modal-actions" style="margin-top:1rem">
+      <button class="btn-secondary" onclick="closeReportDetail()">FECHAR</button>
+      <button class="btn-confirm" id="btn-delete-report" onclick="deleteCurrentReport()" style="background:var(--red);flex:0.5">EXCLUIR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PAGE -->
+<div id="page-admin" class="page">
+  <div class="section">
+    <div class="section-head">
+      <h2>PAINEL ADMIN</h2>
+      <div class="line"></div>
+      <span class="tag">// SOMENTE COMANDO</span>
+    </div>
+    <div style="margin-bottom:2rem">
+      <h3 style="font-family:var(--font-head);font-size:20px;letter-spacing:2px;color:var(--text2);margin-bottom:1rem">USUÁRIOS AGUARDANDO APROVAÇÃO</h3>
+      <table class="pending-table">
+        <thead><tr><th>Usuário</th><th>Solicitado em</th><th>Ação</th></tr></thead>
+        <tbody id="pending-body"></tbody>
+      </table>
+      <div id="no-pending" style="font-family:var(--font-mono);font-size:13px;color:var(--text3);padding:1.5rem 0;display:none">Nenhum usuário aguardando aprovação.</div>
+    </div>
+    <div style="margin-top:2rem">
+      <h3 style="font-family:var(--font-head);font-size:20px;letter-spacing:2px;color:var(--text2);margin-bottom:1rem">CRIAR NOVO USUÁRIO</h3>
+      <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:4px;padding:1.5rem;max-width:500px">
+        <div class="form-row">
+          <div class="field"><label>Usuário</label><input type="text" id="new-user" placeholder="nome.usuario" /></div>
+          <div class="field"><label>Senha</label><input type="password" id="new-pass" placeholder="senha" /></div>
+        </div>
+        <div class="form-row" style="margin-top:1rem">
+          <div class="field"><label>Patente</label>
+            <select id="new-rank">
+              <option>Soldado</option><option>Cabo</option><option>3° Sargento</option><option>2° Sargento</option><option>1° Sargento</option><option>Subtenente</option><option>2° Tenente</option><option>1° Tenente</option><option>Capitão</option><option>Major</option><option>Tenente-Coronel</option><option>Coronel</option>
+            </select>
+          </div>
+          <div class="field"><label>Nível de acesso</label>
+            <select id="new-role">
+              <option value="membro">Membro</option>
+              <option value="admin">Admin / Comando</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" style="margin-top:1rem;font-size:15px;letter-spacing:2px" onclick="createUser()">CRIAR USUÁRIO</button>
+        <div id="create-msg" style="margin-top:0.75rem;font-family:var(--font-mono);font-size:12px;color:#81c784;display:none">Usuário criado com sucesso!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD OFFICER MODAL -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <h3>ADICIONAR POLICIAL</h3>
+    <div class="modal-grid">
+      <div class="field"><label>Nome do policial</label><input type="text" id="m-nome" placeholder="Nome Completo" /></div>
+      <div class="field"><label>Patente</label>
+        <select id="m-patente">
+          <option>Soldado</option><option>Cabo</option><option>3° Sargento</option><option>2° Sargento</option><option>1° Sargento</option><option>Subtenente</option><option>2° Tenente</option><option>1° Tenente</option><option>Capitão</option><option>Major</option><option>Tenente-Coronel</option><option>Coronel</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-top:1rem"><label>Status</label>
+      <select id="m-status"><option value="ativo">Ativo</option><option value="inativo">Inativo</option><option value="ferias">De férias</option></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeAddModal()">CANCELAR</button>
+      <button class="btn-confirm" onclick="addOfficer()">CONFIRMAR</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const RANKS = ['Soldado','Cabo','3° Sargento','2° Sargento','1° Sargento','Subtenente','2° Tenente','1° Tenente','Capitão','Major','Tenente-Coronel','Coronel'];
+const RANK_LEVEL = (r) => RANKS.indexOf(r);
+
+function getData(k, def) { try { return JSON.parse(localStorage.getItem(k)) ?? def; } catch(e) { return def; } }
+function setData(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+
+// Init users
+if (!getData('pm_users', null)) {
+  setData('pm_users', [
+    { user: 'admin', pass: 'admin123', rank: 'Coronel', role: 'admin' },
+    { user: 'pm.demo', pass: '1234', rank: 'Soldado', role: 'membro' }
+  ]);
+}
+
+// Init officers
+if (!getData('pm_officers', null)) {
+  setData('pm_officers', [
+    { id: 1, name: 'Carlos Andrade', rank: 'Coronel', status: 'ativo', since: '2024-01' },
+    { id: 2, name: 'Marcos Pereira', rank: 'Tenente-Coronel', status: 'ativo', since: '2024-02' },
+    { id: 3, name: 'Rafael Souza', rank: 'Major', status: 'ativo', since: '2024-03' },
+    { id: 4, name: 'João Lima', rank: 'Capitão', status: 'ativo', since: '2024-04' },
+    { id: 5, name: 'Pedro Alves', rank: 'Soldado', status: 'ativo', since: '2024-05' },
+  ]);
+}
+
+if (!getData('pm_pending', null)) setData('pm_pending', []);
+
+// ===================== AUTH =====================
+let currentUser = null;
+
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const users = getData('pm_users', []);
+  const found = users.find(x => x.user === u && x.pass === p);
+  const err = document.getElementById('login-error');
+  if (!found) { err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  currentUser = found;
+  document.getElementById('nav-username').textContent = found.user;
+  document.getElementById('nav-rank').textContent = found.rank;
+  document.getElementById('navbar').style.display = '';
+  if (found.role === 'admin') {
+    document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+    document.getElementById('admin-add-btn').style.display = '';
+    document.getElementById('actions-col').style.display = '';
+  }
+  // mostrar relatórios para quem pode avaliar
+  if (canReport(found.rank) || found.role === 'admin') {
+    document.getElementById('nav-reports').style.display = '';
+    document.getElementById('home-card-reports').style.display = '';
+  }
+  document.getElementById('page-login').classList.remove('active');
+  showPage('home');
+  updateStats();
+}
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('navbar').style.display = 'none';
+  document.getElementById('nav-reports').style.display = 'none';
+  document.getElementById('home-card-reports').style.display = 'none';
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-login').classList.add('active');
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+// ===================== NAVIGATION =====================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const map = { home:0, ranking:1, rules:2, recruit:3, reports:4, admin:5 };
+  const links = document.querySelectorAll('.nav-link');
+  if (links[map[id]]) links[map[id]].classList.add('active');
+  if (id === 'ranking') renderRanking('all');
+  if (id === 'admin') renderAdmin();
+  if (id === 'reports') initReportsPage();
+  window.scrollTo(0,0);
+}
+
+// ===================== RANKING =====================
+let currentFilter = 'all';
+
+function getRankClass(rank) {
+  const l = RANK_LEVEL(rank);
+  if (l >= 10) return 'rank-1';
+  if (l >= 8) return 'rank-2';
+  if (l >= 6) return 'rank-3';
+  if (l >= 4) return 'rank-4';
+  return 'rank-5';
+}
+
+function filterRank(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.rank-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRanking(f);
+}
+
+function renderRanking(f) {
+  let officers = getData('pm_officers', []);
+  officers.sort((a,b) => RANK_LEVEL(b.rank) - RANK_LEVEL(a.rank));
+  if (f !== 'all') {
+    officers = officers.filter(o => {
+      if (f === 'Tenentes') return o.rank.includes('Tenente') && !o.rank.includes('Coronel');
+      if (f === 'Sargento') return o.rank.includes('Sargento');
+      return o.rank === f;
+    });
+  }
+  const body = document.getElementById('rank-body');
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  body.innerHTML = officers.map((o, i) => `
+    <tr>
+      <td style="font-family:var(--font-mono);color:var(--text3);font-size:12px">${String(i+1).padStart(2,'0')}</td>
+      <td><div class="officer-name">${o.name}</div><div class="officer-id">#${String(o.id).padStart(4,'0')}</div></td>
+      <td><span class="rank-badge ${getRankClass(o.rank)}"><span class="rank-pip"></span>${o.rank}</span></td>
+      <td><span class="status-dot ${o.status==='ativo'?'status-on':'status-off'}"></span>${o.status==='ativo'?'Ativo':o.status==='ferias'?'De férias':'Inativo'}</td>
+      <td style="font-family:var(--font-mono);font-size:13px;color:var(--text3)">${o.since}</td>
+      ${isAdmin ? `<td><button onclick="removeOfficer(${o.id})" style="background:none;border:1px solid rgba(192,57,43,0.3);color:#e57373;padding:4px 10px;border-radius:3px;font-family:var(--font-mono);font-size:11px;cursor:pointer">REMOVER</button></td>` : ''}
+    </tr>
+  `).join('');
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = getData('pm_officers', []).length;
+}
+
+function openAddModal() { document.getElementById('add-modal').classList.add('open'); }
+function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
+
+function addOfficer() {
+  const name = document.getElementById('m-nome').value.trim();
+  if (!name) return;
+  const officers = getData('pm_officers', []);
+  const id = Date.now();
+  officers.push({ id, name, rank: document.getElementById('m-patente').value, status: document.getElementById('m-status').value, since: new Date().toISOString().slice(0,7) });
+  setData('pm_officers', officers);
+  closeAddModal();
+  document.getElementById('m-nome').value = '';
+  renderRanking(currentFilter);
+}
+
+function removeOfficer(id) {
+  if (!confirm('Remover este policial?')) return;
+  setData('pm_officers', getData('pm_officers', []).filter(o => o.id !== id));
+  renderRanking(currentFilter);
+}
+
+// ===================== RELATÓRIOS =====================
+
+// Hierarquia: quem pode avaliar quem
+// Cabo → Soldado
+// Sargentos (1°,2°,3°) → Soldado, Cabo
+// Subtenente → Soldados, Cabos, Sargentos
+// Tenentes → Sargentos
+// Capitão → Tenentes, Subtenente
+// Major → Capitão, Tenentes, Subtenente
+// Tenente-Coronel, Coronel, Admin → todos
+
+const SUBORDINATE_MAP = {
+  'Cabo':             ['Soldado'],
+  '3° Sargento':      ['Soldado','Cabo'],
+  '2° Sargento':      ['Soldado','Cabo'],
+  '1° Sargento':      ['Soldado','Cabo'],
+  'Subtenente':       ['3° Sargento','2° Sargento','1° Sargento'],
+  '2° Tenente':       ['3° Sargento','2° Sargento','1° Sargento'],
+  '1° Tenente':       ['3° Sargento','2° Sargento','1° Sargento'],
+  'Capitão':          ['Subtenente','2° Tenente','1° Tenente'],
+  'Major':            ['Subtenente','2° Tenente','1° Tenente','Capitão'],
+  'Tenente-Coronel':  ['Subtenente','2° Tenente','1° Tenente','Capitão','Major'],
+  'Coronel':          ['Subtenente','2° Tenente','1° Tenente','Capitão','Major','Tenente-Coronel'],
+};
+
+const SCORE_FIELDS = ['desempenho','presenca','conduta','equipe','tecnico','iniciativa'];
+const SCORE_LABELS = { desempenho:'Desempenho', presenca:'Presença', conduta:'Conduta', equipe:'Equipe', tecnico:'Técnico', iniciativa:'Iniciativa' };
+const RECOM_LABELS = { promover:'Recomendar promoção', manter:'Manter patente', advertir:'Advertência', rebaixar:'Recomendar rebaixamento' };
+const RECOM_COLORS = { promover:'#c9a84c', manter:'#81c784', advertir:'#ffb74d', rebaixar:'#e57373' };
+
+let reportScores = { desempenho:0, presenca:0, conduta:0, equipe:0, tecnico:0, iniciativa:0 };
+let currentReportTab = 'all';
+let viewingReportId = null;
+
+if (!getData('pm_reports', null)) setData('pm_reports', []);
+
+function canReport(rank) {
+  if (!rank) return false;
+  return rank !== 'Soldado';
+}
+
+function getSubordinateRanks(rank, role) {
+  if (role === 'admin') return RANKS.slice(0, -1); // admin vê todos exceto Coronel
+  return SUBORDINATE_MAP[rank] || [];
+}
+
+function initStars() {
+  SCORE_FIELDS.forEach(field => {
+    const container = document.getElementById('stars-' + field);
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 1; i <= 5; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.textContent = '★';
+      s.dataset.val = i;
+      s.onclick = () => setStars(field, i);
+      container.appendChild(s);
+    }
+  });
+  reportScores = { desempenho:0, presenca:0, conduta:0, equipe:0, tecnico:0, iniciativa:0 };
+}
+
+function setStars(field, val) {
+  reportScores[field] = val;
+  const stars = document.querySelectorAll(`#stars-${field} .star`);
+  stars.forEach(s => s.classList.toggle('active', parseInt(s.dataset.val) <= val));
+}
+
+function starsDisplay(n) {
+  return '★'.repeat(n) + '☆'.repeat(5-n);
+}
+
+function populateAvaliadoSelect() {
+  const sel = document.getElementById('r-avaliado');
+  if (!sel || !currentUser) return;
+  const allowed = getSubordinateRanks(currentUser.rank, currentUser.role);
+  const officers = getData('pm_officers', []).filter(o => allowed.includes(o.rank));
+  sel.innerHTML = '<option value="">Selecione o policial...</option>';
+  officers.sort((a,b) => RANK_LEVEL(b.rank) - RANK_LEVEL(a.rank));
+  officers.forEach(o => {
+    const opt = document.createElement('option');
+    opt.value = o.id;
+    opt.textContent = `${o.name} — ${o.rank}`;
+    sel.appendChild(opt);
+  });
+}
+
+function initReportsPage() {
+  if (!currentUser) return;
+  const hasPerms = canReport(currentUser.rank) || currentUser.role === 'admin';
+  document.getElementById('reports-no-perms').style.display = hasPerms ? 'none' : '';
+  document.getElementById('reports-content').style.display = hasPerms ? '' : 'none';
+  if (!hasPerms) return;
+  initStars();
+  populateAvaliadoSelect();
+  // painel de lista: todos veem seus próprios; admin vê todos
+  renderReportList();
+}
+
+function submitReport() {
+  const avaliadoId = parseInt(document.getElementById('r-avaliado').value);
+  if (!avaliadoId) { alert('Selecione o policial a ser avaliado.'); return; }
+  const allZero = SCORE_FIELDS.every(f => reportScores[f] === 0);
+  if (allZero) { alert('Preencha ao menos uma nota.'); return; }
+
+  const officers = getData('pm_officers', []);
+  const avaliado = officers.find(o => o.id === avaliadoId);
+  if (!avaliado) return;
+
+  const reports = getData('pm_reports', []);
+  const avg = (SCORE_FIELDS.reduce((s,f) => s + (reportScores[f]||0), 0) / SCORE_FIELDS.filter(f => reportScores[f] > 0).length).toFixed(1);
+
+  reports.unshift({
+    id: Date.now(),
+    avaliadorUser: currentUser.user,
+    avaliadorRank: currentUser.rank,
+    avaliadoId: avaliado.id,
+    avaliadoName: avaliado.name,
+    avaliadoRank: avaliado.rank,
+    scores: { ...reportScores },
+    avg: parseFloat(avg),
+    obs: document.getElementById('r-obs').value.trim(),
+    recomendacao: document.getElementById('r-recomendacao').value,
+    date: new Date().toLocaleDateString('pt-BR'),
+    dateISO: new Date().toISOString()
+  });
+  setData('pm_reports', reports);
+
+  // reset
+  initStars();
+  document.getElementById('r-avaliado').value = '';
+  document.getElementById('r-obs').value = '';
+  document.getElementById('r-recomendacao').value = 'manter';
+  const ok = document.getElementById('report-success');
+  ok.style.display = 'block';
+  setTimeout(() => ok.style.display = 'none', 3000);
+  renderReportList();
+}
+
+function setReportTab(tab, btn) {
+  currentReportTab = tab;
+  document.querySelectorAll('.report-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderReportList();
+}
+
+function renderReportList() {
+  const container = document.getElementById('report-list-content');
+  if (!container || !currentUser) return;
+  let reports = getData('pm_reports', []);
+  // membros só veem os próprios; admin vê todos
+  if (currentUser.role !== 'admin') {
+    reports = reports.filter(r => r.avaliadorUser === currentUser.user);
+  }
+  if (currentReportTab === 'mine') {
+    reports = reports.filter(r => r.avaliadorUser === currentUser.user);
+  }
+  if (!reports.length) {
+    container.innerHTML = '<div class="no-reports">Nenhum relatório encontrado.</div>';
+    return;
+  }
+  container.innerHTML = reports.map(r => `
+    <div class="report-card" onclick="openReportDetail(${r.id})">
+      <div class="report-card-head">
+        <div>
+          <div class="report-card-title">${r.avaliadoName}</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);margin-top:2px">${r.avaliadoRank}</div>
+        </div>
+        <div class="report-card-meta">
+          por ${r.avaliadorUser}<br>
+          ${r.avaliadorRank}<br>
+          ${r.date}
+        </div>
+      </div>
+      <div class="report-scores">
+        ${SCORE_FIELDS.filter(f => r.scores[f] > 0).map(f => `
+          <div class="report-score-pill">
+            <span>${SCORE_LABELS[f]}</span>
+            <span class="score-stars-mini">${starsDisplay(r.scores[f])}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem">
+        <span style="font-family:var(--font-mono);font-size:11px;color:${RECOM_COLORS[r.recomendacao]};border:1px solid ${RECOM_COLORS[r.recomendacao]}33;padding:2px 8px;border-radius:2px;">${RECOM_LABELS[r.recomendacao]}</span>
+        <span style="font-family:var(--font-head);font-size:18px;color:var(--gold)">Média: ${r.avg}</span>
+      </div>
+      ${r.obs ? `<div class="report-obs">"${r.obs.length > 100 ? r.obs.slice(0,100)+'...' : r.obs}"</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function openReportDetail(id) {
+  const reports = getData('pm_reports', []);
+  const r = reports.find(x => x.id === id);
+  if (!r) return;
+  viewingReportId = id;
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  document.getElementById('btn-delete-report').style.display = isAdmin ? '' : 'none';
+  document.getElementById('report-detail-content').innerHTML = `
+    <h3 style="font-family:var(--font-head);font-size:22px;letter-spacing:3px;color:var(--gold);margin-bottom:0.25rem">RELATÓRIO DE DESEMPENHO</h3>
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--text3);letter-spacing:1px;margin-bottom:1.5rem">${r.date} — por ${r.avaliadorUser} (${r.avaliadorRank})</div>
+    <div style="background:var(--bg3);border:1px solid var(--border);padding:1rem;border-radius:3px;margin-bottom:1.5rem">
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;margin-bottom:4px">POLICIAL AVALIADO</div>
+      <div style="font-family:var(--font-head);font-size:22px;letter-spacing:2px">${r.avaliadoName}</div>
+      <div style="font-family:var(--font-mono);font-size:12px;color:var(--text2)">${r.avaliadoRank}</div>
+    </div>
+    <div class="report-avg-badge">MÉDIA GERAL <span>${r.avg} / 5.0</span></div>
+    <div class="detail-score-grid">
+      ${SCORE_FIELDS.map(f => `
+        <div class="detail-score-item">
+          <div class="detail-score-label">${SCORE_LABELS[f]}</div>
+          <div class="detail-score-stars">${starsDisplay(r.scores[f] || 0)}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="margin-bottom:1.25rem">
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--text3);margin-bottom:8px">RECOMENDAÇÃO</div>
+      <span style="font-family:var(--font-mono);font-size:13px;color:${RECOM_COLORS[r.recomendacao]};border:1px solid ${RECOM_COLORS[r.recomendacao]}44;padding:5px 14px;border-radius:3px;">${RECOM_LABELS[r.recomendacao]}</span>
+    </div>
+    ${r.obs ? `
+    <div>
+      <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--text3);margin-bottom:8px">OBSERVAÇÕES</div>
+      <div style="background:var(--bg3);border:1px solid var(--border);padding:1rem;border-radius:3px;font-size:14px;color:var(--text2);line-height:1.7">${r.obs}</div>
+    </div>` : ''}
+  `;
+  document.getElementById('report-detail-modal').classList.add('open');
+}
+
+function closeReportDetail() {
+  document.getElementById('report-detail-modal').classList.remove('open');
+  viewingReportId = null;
+}
+
+function deleteCurrentReport() {
+  if (!viewingReportId || !confirm('Excluir este relatório permanentemente?')) return;
+  setData('pm_reports', getData('pm_reports', []).filter(r => r.id !== viewingReportId));
+  closeReportDetail();
+  renderReportList();
+}
+
+// ===================== RULES =====================
+function scrollToRule(id, el) {
+  document.querySelectorAll('.rules-link').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ===================== RECRUTAMENTO =====================
+function submitForm() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const nick = document.getElementById('f-nick').value.trim();
+  const discord = document.getElementById('f-discord').value.trim();
+  const idade = document.getElementById('f-idade').value.trim();
+  if (!nome || !nick || !discord || !idade) { alert('Preencha todos os campos obrigatórios.'); return; }
+
+  const subject = encodeURIComponent(`[PM Legacy] Candidatura - ${nome} (${nick})`);
+  const body = encodeURIComponent(
+    `FICHA DE CANDIDATURA — PM LEGACY\n\n` +
+    `Nome do personagem: ${nome}\n` +
+    `Nick no servidor: ${nick}\n` +
+    `Idade real: ${idade}\n` +
+    `Discord: ${discord}\n\n` +
+    `Experiência com roleplay:\n${document.getElementById('f-exp').value}\n\n` +
+    `Motivação:\n${document.getElementById('f-motivo').value}\n\n` +
+    `Disponibilidade: ${document.getElementById('f-horario').value}`
+  );
+  window.location.href = `mailto:girilito7@gmail.com?subject=${subject}&body=${body}`;
+  document.getElementById('form-fields').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+
+// ===================== ADMIN =====================
+function renderAdmin() {
+  const pending = getData('pm_pending', []);
+  const body = document.getElementById('pending-body');
+  const noPending = document.getElementById('no-pending');
+  if (!pending.length) { body.innerHTML = ''; noPending.style.display = 'block'; return; }
+  noPending.style.display = 'none';
+  body.innerHTML = pending.map(u => `
+    <tr>
+      <td style="font-family:var(--font-mono)">${u.user}</td>
+      <td style="font-family:var(--font-mono);font-size:12px;color:var(--text3)">${u.date}</td>
+      <td>
+        <button class="btn-approve" onclick="approveUser('${u.user}')">APROVAR</button>
+        <button class="btn-reject" onclick="rejectUser('${u.user}')">REJEITAR</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function approveUser(user) {
+  let pending = getData('pm_pending', []);
+  const u = pending.find(x => x.user === user);
+  if (!u) return;
+  const users = getData('pm_users', []);
+  users.push({ user: u.user, pass: u.pass, rank: 'Soldado', role: 'membro' });
+  setData('pm_users', users);
+  setData('pm_pending', pending.filter(x => x.user !== user));
+  renderAdmin();
+}
+
+function rejectUser(user) {
+  setData('pm_pending', getData('pm_pending', []).filter(x => x.user !== user));
+  renderAdmin();
+}
+
+function createUser() {
+  const user = document.getElementById('new-user').value.trim();
+  const pass = document.getElementById('new-pass').value.trim();
+  if (!user || !pass) { alert('Preencha usuário e senha.'); return; }
+  const users = getData('pm_users', []);
+  if (users.find(u => u.user === user)) { alert('Usuário já existe.'); return; }
+  users.push({ user, pass, rank: document.getElementById('new-rank').value, role: document.getElementById('new-role').value });
+  setData('pm_users', users);
+  document.getElementById('new-user').value = '';
+  document.getElementById('new-pass').value = '';
+  const msg = document.getElementById('create-msg');
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 3000);
+}
+</script>
+</body>
+</html>
