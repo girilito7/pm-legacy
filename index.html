@@ -47,7 +47,8 @@
     .page.active { display: block; }
 
     /* LOGIN PAGE */
-    #page-login { display: flex; align-items: center; justify-content: center; padding-top: 0; background: var(--bg); }
+    #page-login { background: var(--bg); min-height: 100vh; padding-top: 0; }
+    #page-login.active { display: flex; align-items: center; justify-content: center; }
     .login-bg { position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 60%); pointer-events: none; }
     .login-grid { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.4; pointer-events: none; }
     .login-box { position: relative; z-index: 2; width: 100%; max-width: 420px; padding: 2rem; }
@@ -67,6 +68,15 @@
     .btn-primary:hover { background: var(--gold2); }
     .login-info { margin-top: 1rem; font-size: 12px; font-family: var(--font-mono); color: var(--text3); text-align: center; line-height: 1.8; }
     .login-error { background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.4); color: #e57373; padding: 10px 14px; border-radius: 3px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; margin-bottom: 1rem; display: none; }
+
+    .login-switch { display: flex; gap: 2px; margin-bottom: 1.5rem; }
+    .login-tab { flex: 1; padding: 8px; background: var(--bg3); border: 1px solid var(--border2); color: var(--text3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+    .login-tab:first-child { border-radius: 3px 0 0 3px; }
+    .login-tab:last-child { border-radius: 0 3px 3px 0; }
+    .login-tab.active { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.4); color: var(--gold); }
+    .login-panel { display: none; }
+    .login-panel.active { display: block; }
+    .register-success { background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.3); border-radius: 3px; padding: 1rem; font-family: var(--font-mono); font-size: 12px; color: #81c784; letter-spacing: 1px; text-align: center; line-height: 1.8; display: none; margin-bottom: 1rem; }
 
     /* SECTION WRAPPER */
     .section { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
@@ -213,6 +223,88 @@
     .report-tab { font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; color: var(--text3); padding: 8px 16px; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; background: none; transition: all 0.2s; }
     .report-tab.active { color: var(--gold); border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.07); }
 
+    /* PÁGINA PÚBLICA */
+    #page-public { background: var(--bg); padding-top: 0; }
+    #page-public.active { display: block; }
+    .pub-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,11,0.95); border-bottom: 1px solid var(--border2); backdrop-filter: blur(10px); }
+    .pub-nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .pub-logo { font-family: var(--font-head); font-size: 22px; letter-spacing: 3px; color: var(--gold); display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .pub-logo span { font-size: 11px; font-family: var(--font-mono); color: var(--text3); letter-spacing: 2px; display: block; line-height: 1; }
+    .pub-nav-btns { display: flex; gap: 8px; }
+    .btn-login-nav { background: transparent; border: 1px solid var(--border2); color: var(--text2); padding: 7px 20px; border-radius: 3px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; }
+    .btn-login-nav:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-register-nav { background: var(--gold); border: none; color: #0a0a0b; padding: 7px 20px; border-radius: 3px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; cursor: pointer; font-weight: 700; transition: background 0.2s; }
+    .btn-register-nav:hover { background: var(--gold2); }
+    .pub-hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+    .pub-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.06) 0%, transparent 60%); pointer-events: none; }
+    .pub-hero-grid { position: absolute; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 50px 50px; opacity: 0.3; pointer-events: none; }
+    .pub-hero-inner { max-width: 1100px; margin: 0 auto; padding: 8rem 2rem 4rem; position: relative; z-index: 2; display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
+    .pub-hero-kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px; color: var(--gold); margin-bottom: 1rem; }
+    .pub-hero-title { font-family: var(--font-head); font-size: 80px; line-height: 0.88; letter-spacing: 4px; color: var(--text); margin-bottom: 1.5rem; }
+    .pub-hero-title span { color: var(--gold); }
+    .pub-hero-desc { font-size: 16px; color: var(--text2); line-height: 1.8; max-width: 480px; margin-bottom: 2rem; }
+    .pub-hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-pub-primary { background: var(--gold); color: #0a0a0b; border: none; padding: 13px 30px; border-radius: 3px; font-family: var(--font-head); font-size: 18px; letter-spacing: 3px; cursor: pointer; transition: background 0.2s; }
+    .btn-pub-primary:hover { background: var(--gold2); }
+    .btn-pub-secondary { background: transparent; color: var(--text); border: 1px solid var(--border2); padding: 13px 30px; border-radius: 3px; font-family: var(--font-head); font-size: 18px; letter-spacing: 3px; cursor: pointer; transition: all 0.2s; }
+    .btn-pub-secondary:hover { border-color: var(--gold); color: var(--gold); }
+    .pub-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border2); border: 1px solid var(--border2); border-radius: 4px; overflow: hidden; }
+    .pub-stat { background: var(--bg2); padding: 1.5rem; text-align: center; }
+    .pub-stat-num { font-family: var(--font-head); font-size: 42px; color: var(--gold); letter-spacing: 2px; line-height: 1; }
+    .pub-stat-label { font-family: var(--font-mono); font-size: 10px; color: var(--text3); letter-spacing: 2px; margin-top: 6px; }
+    .pub-section { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+    .pub-section-title { font-family: var(--font-head); font-size: 36px; letter-spacing: 4px; color: var(--text); margin-bottom: 0.5rem; }
+    .pub-section-title span { color: var(--gold); }
+    .pub-section-sub { font-family: var(--font-mono); font-size: 11px; color: var(--text3); letter-spacing: 2px; margin-bottom: 3rem; }
+    .pub-divider { height: 1px; background: linear-gradient(90deg, var(--gold) 0%, transparent 60%); margin-bottom: 3rem; width: 100%; }
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+    .value-card { background: var(--bg); padding: 2rem; border-bottom: 2px solid transparent; transition: all 0.2s; }
+    .value-card:hover { background: var(--bg2); border-bottom-color: var(--gold); }
+    .value-icon { font-size: 28px; margin-bottom: 1rem; }
+    .value-title { font-family: var(--font-head); font-size: 20px; letter-spacing: 2px; color: var(--gold); margin-bottom: 0.5rem; }
+    .value-desc { font-size: 14px; color: var(--text2); line-height: 1.7; }
+    .patentes-grid { display: flex; flex-direction: column; gap: 2px; }
+    .patente-row { display: flex; align-items: center; gap: 1.5rem; padding: 1rem 1.5rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 3px; transition: border-color 0.2s; }
+    .patente-row:hover { border-color: var(--border2); }
+    .patente-num { font-family: var(--font-head); font-size: 22px; color: var(--text3); min-width: 32px; }
+    .patente-nome { font-family: var(--font-head); font-size: 18px; letter-spacing: 2px; flex: 1; }
+    .patente-tipo { font-family: var(--font-mono); font-size: 11px; color: var(--text3); letter-spacing: 1px; }
+    .recruit-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); }
+    .recruit-step { background: var(--bg); padding: 2rem 1.5rem; }
+    .step-num { font-family: var(--font-head); font-size: 48px; color: rgba(201,168,76,0.2); line-height: 1; margin-bottom: 0.75rem; }
+    .step-title { font-family: var(--font-head); font-size: 18px; letter-spacing: 2px; color: var(--gold); margin-bottom: 0.5rem; }
+    .step-desc { font-size: 13px; color: var(--text2); line-height: 1.7; }
+    .pub-rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .pub-rule-item { display: flex; gap: 1rem; padding: 1.25rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 3px; }
+    .pub-rule-num { font-family: var(--font-head); font-size: 22px; color: var(--text3); min-width: 32px; line-height: 1.2; }
+    .pub-rule-text { font-size: 14px; color: var(--text2); line-height: 1.7; }
+    .pub-rule-text strong { color: var(--text); }
+    .pub-cta { background: var(--bg2); border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); padding: 5rem 2rem; text-align: center; }
+    .pub-cta h2 { font-family: var(--font-head); font-size: 48px; letter-spacing: 4px; color: var(--text); margin-bottom: 1rem; }
+    .pub-cta h2 span { color: var(--gold); }
+    .pub-cta p { font-size: 15px; color: var(--text2); margin-bottom: 2rem; }
+    .pub-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .pub-footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-family: var(--font-mono); font-size: 11px; color: var(--text3); letter-spacing: 2px; }
+
+    /* MODAL LOGIN/REGISTRO */
+    .auth-modal { max-width: 440px; }
+    .auth-modal-switch { display: flex; gap: 2px; margin-bottom: 1.5rem; }
+    .auth-tab { flex: 1; padding: 8px; background: var(--bg3); border: 1px solid var(--border2); color: var(--text3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+    .auth-tab:first-child { border-radius: 3px 0 0 3px; }
+    .auth-tab:last-child { border-radius: 0 3px 3px 0; }
+    .auth-tab.active { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.4); color: var(--gold); }
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+
+    @media (max-width: 768px) {
+      .pub-hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .pub-hero-title { font-size: 56px; }
+      .values-grid { grid-template-columns: 1fr; }
+      .recruit-steps { grid-template-columns: 1fr 1fr; }
+      .pub-rules-grid { grid-template-columns: 1fr; }
+      .pub-nav-btns { gap: 4px; }
+    }
+
     @media (max-width: 768px) {
       .hero { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem 2rem; }
       .hero-title { font-size: 52px; }
@@ -227,33 +319,297 @@
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
-<div id="page-login" class="page active">
-  <div class="login-bg"></div>
-  <div class="login-grid"></div>
-  <div class="login-box">
-    <div class="login-emblem">
-      <div class="emblem-ring"><div class="emblem-star">★</div></div>
-      <div class="login-title">PM LEGACY</div>
-      <div class="login-sub">POLÍCIA MILITAR — PORTAL RESTRITO</div>
+<!-- PÁGINA PÚBLICA -->
+<div id="page-public" class="page active">
+
+  <!-- NAV PÚBLICA -->
+  <nav class="pub-nav">
+    <div class="pub-nav-inner">
+      <div class="pub-logo">★ <div><span>// SERVIDOR LEGACY</span>PM LEGACY</div></div>
+      <div class="pub-nav-btns">
+        <button class="btn-login-nav" onclick="openAuthModal('login')">ENTRAR</button>
+        <button class="btn-register-nav" onclick="openAuthModal('register')">CRIAR CONTA</button>
+      </div>
     </div>
-    <div class="login-card">
-      <h2>// AUTENTICAÇÃO NECESSÁRIA</h2>
+  </nav>
+
+  <!-- HERO + BOLETIM LADO A LADO -->
+  <div class="pub-hero">
+    <div class="pub-hero-bg"></div>
+    <div class="pub-hero-grid"></div>
+    <div style="max-width:1100px;margin:0 auto;padding:8rem 2rem 4rem;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%">
+
+      <!-- ESQUERDA: TÍTULO -->
+      <div>
+        <div class="pub-hero-kicker">// SERVIDOR LEGACY — CORPORAÇÃO OFICIAL</div>
+        <div class="pub-hero-title">POLÍCIA<br><span>MILITAR</span><br>LEGACY</div>
+        <p class="pub-hero-desc">Servir e proteger é nossa missão. A PM Legacy mantém a ordem e a lei no servidor, garantindo uma experiência de roleplay justa e imersiva para todos os cidadãos.</p>
+        <div style="display:inline-flex;align-items:center;gap:16px;margin-top:1rem;padding:14px 24px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:4px;">
+          <span style="font-family:var(--font-head);font-size:48px;color:var(--gold);letter-spacing:2px;line-height:1" id="pub-stat-total">—</span>
+          <div>
+            <div style="font-family:var(--font-head);font-size:16px;letter-spacing:3px;color:var(--text)">POLICIAIS</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;">NO EFETIVO ATIVO</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIREITA: BOLETIM -->
+      <div>
+        <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:1rem">// BOLETIM DE SERVIÇO</div>
+        <div style="display:flex;flex-direction:column;gap:1px">
+
+          <div style="display:flex;background:rgba(10,10,11,0.7);border:1px solid var(--border2)">
+            <div style="width:3px;background:var(--gold);flex-shrink:0"></div>
+            <div style="padding:0.9rem 1.1rem;flex:1">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;margin-bottom:4px">AVISO GERAL</div>
+              <div style="font-size:13px;color:var(--text);line-height:1.6">Bem-vindo ao portal oficial da Polícia Militar do Legacy. Este site é de uso exclusivo dos membros da corporação e visitantes do servidor.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;background:rgba(10,10,11,0.7);border:1px solid var(--border2);border-top:none">
+            <div style="width:3px;background:var(--gold);flex-shrink:0"></div>
+            <div style="padding:0.9rem 1.1rem;flex:1">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;margin-bottom:4px">RECRUTAMENTO</div>
+              <div style="font-size:13px;color:var(--text);line-height:1.6">As candidaturas para ingresso na PM estão abertas. Crie sua conta no portal e preencha o formulário de recrutamento.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;background:rgba(10,10,11,0.7);border:1px solid var(--border2);border-top:none">
+            <div style="width:3px;background:var(--gold);flex-shrink:0"></div>
+            <div style="padding:0.9rem 1.1rem;flex:1">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;margin-bottom:4px">REGIMENTO INTERNO</div>
+              <div style="font-size:13px;color:var(--text);line-height:1.6">O regimento interno da corporação está em fase de elaboração pelo Comando. Em breve será publicado na aba de Regulamentos.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;background:rgba(10,10,11,0.7);border:1px solid rgba(192,57,43,0.4);border-top:none">
+            <div style="width:3px;background:var(--red);flex-shrink:0"></div>
+            <div style="padding:0.9rem 1.1rem;flex:1">
+              <div style="font-family:var(--font-mono);font-size:10px;color:rgba(220,80,70,0.9);letter-spacing:2px;margin-bottom:4px">CONDUTA</div>
+              <div style="font-size:13px;color:var(--text);line-height:1.6">Todo policial deve manter postura profissional dentro e fora do servidor. Infrações ao código de conduta serão apuradas pelo Comando.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MISSÃO E VALORES -->
+  <div class="pub-section">
+    <div class="pub-section-title">MISSÃO & <span>VALORES</span></div>
+    <div class="pub-section-sub">// O QUE NOS MOVE</div>
+    <div class="pub-divider"></div>
+    <div style="font-size:15px;color:var(--text2);line-height:1.9;max-width:700px;margin-bottom:3rem">
+      A <strong style="color:var(--text)">Polícia Militar do Legacy</strong> é a corporação responsável pela manutenção da ordem pública no servidor. Nosso compromisso é com o roleplay de qualidade, o respeito às regras e a proteção de todos os cidadãos. Atuamos com profissionalismo, hierarquia e dedicação 24 horas por dia.
+    </div>
+    <div class="values-grid">
+      <div class="value-card"><div class="value-icon">⚖️</div><div class="value-title">JUSTIÇA</div><div class="value-desc">Agimos com imparcialidade, aplicando a lei de forma justa e igualitária para todos os cidadãos do servidor.</div></div>
+      <div class="value-card"><div class="value-icon">🛡️</div><div class="value-title">PROTEÇÃO</div><div class="value-desc">Nossa prioridade é garantir a segurança de todos, mantendo a ordem e prevenindo o crime no servidor Legacy.</div></div>
+      <div class="value-card"><div class="value-icon">🎖️</div><div class="value-title">HONRA</div><div class="value-desc">Atuamos com integridade e responsabilidade, honrando o uniforme e a corporação em todas as situações.</div></div>
+      <div class="value-card"><div class="value-icon">📋</div><div class="value-title">DISCIPLINA</div><div class="value-desc">Seguimos a hierarquia e os protocolos estabelecidos, garantindo operações coordenadas e eficientes.</div></div>
+      <div class="value-card"><div class="value-icon">🤝</div><div class="value-title">RESPEITO</div><div class="value-desc">Tratamos todos com dignidade, dentro e fora do personagem, promovendo um ambiente saudável de jogo.</div></div>
+      <div class="value-card"><div class="value-icon">🎯</div><div class="value-title">EXCELÊNCIA</div><div class="value-desc">Buscamos a melhoria contínua no roleplay, treinamentos e desempenho operacional da corporação.</div></div>
+    </div>
+  </div>
+
+  <!-- HIERARQUIA -->
+  <div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="pub-section">
+      <div class="pub-section-title">HIERARQUIA <span>MILITAR</span></div>
+      <div class="pub-section-sub">// ESTRUTURA DE COMANDO</div>
+      <div class="pub-divider"></div>
+      <div class="patentes-grid">
+
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--gold);padding:8px 0 4px;border-bottom:1px solid rgba(201,168,76,0.2);margin-bottom:4px">OFICIAIS SUPERIORES</div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-1"><span class="rank-pip"></span>Coronel</span></div>
+          <div class="patente-tipo">Oficiais Superiores</div>
+        </div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-1"><span class="rank-pip"></span>Tenente-Coronel</span></div>
+          <div class="patente-tipo">Oficiais Superiores</div>
+        </div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-2"><span class="rank-pip"></span>Major</span></div>
+          <div class="patente-tipo">Oficiais Superiores</div>
+        </div>
+
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--text3);padding:12px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px;margin-top:8px">OFICIAIS INTERMEDIÁRIOS</div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-2"><span class="rank-pip"></span>Capitão</span></div>
+          <div class="patente-tipo">Oficiais Intermediários</div>
+        </div>
+
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--text3);padding:12px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px;margin-top:8px">OFICIAIS SUBALTERNOS</div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-3"><span class="rank-pip"></span>1° Tenente</span></div>
+          <div class="patente-tipo">Oficiais Subalternos</div>
+        </div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-3"><span class="rank-pip"></span>2° Tenente</span></div>
+          <div class="patente-tipo">Oficiais Subalternos</div>
+        </div>
+
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--text3);padding:12px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px;margin-top:8px">PRAÇAS ESPECIAIS</div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-4"><span class="rank-pip"></span>Subtenente</span></div>
+          <div class="patente-tipo">Praças Especiais</div>
+        </div>
+
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:3px;color:var(--text3);padding:12px 0 4px;border-bottom:1px solid var(--border);margin-bottom:4px;margin-top:8px">PRAÇAS</div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-4"><span class="rank-pip"></span>1° Sargento</span></div>
+          <div class="patente-tipo">Praças</div>
+        </div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-4"><span class="rank-pip"></span>2° Sargento</span></div>
+          <div class="patente-tipo">Praças</div>
+        </div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-4"><span class="rank-pip"></span>3° Sargento</span></div>
+          <div class="patente-tipo">Praças</div>
+        </div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-5"><span class="rank-pip"></span>Cabo</span></div>
+          <div class="patente-tipo">Praças</div>
+        </div>
+        <div class="patente-row">
+
+          <div class="patente-nome"><span class="rank-badge rank-5"><span class="rank-pip"></span>Soldado</span></div>
+          <div class="patente-tipo">Praças</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RECRUTAMENTO PÚBLICO -->
+  <div id="sec-recrutamento">
+    <div class="pub-section">
+      <div class="pub-section-title">RECRUTAMENTO</div>
+      <div class="pub-section-sub">// INGRESSO NA CORPORAÇÃO</div>
+      <div class="pub-divider"></div>
+      <div class="recruit-layout">
+        <div class="recruit-info">
+          <h3>JUNTE-SE À PM LEGACY</h3>
+          <p>A Polícia Militar do Legacy busca candidatos comprometidos com o roleplay de qualidade, disciplina e trabalho em equipe.</p>
+          <p>Preencha o formulário ao lado. Sua candidatura será avaliada pelo Comando e você receberá um retorno via Discord.</p>
+          <ul class="req-list">
+            <li>Ter no mínimo 13 anos de idade</li>
+            <li>Conta ativa no servidor Legacy</li>
+            <li>Conhecimento básico de roleplay</li>
+            <li>Disponibilidade para treinamentos</li>
+            <li>Microfone funcional</li>
+            <li>Comprometimento com a corporação</li>
+          </ul>
+        </div>
+        <div class="recruit-form">
+          <h3>FICHA DE CANDIDATURA</h3>
+          <div id="form-fields">
+            <div class="form-row">
+              <div class="field"><label>Nome do personagem</label><input type="text" id="f-nome" placeholder="Nome Sobrenome" /></div>
+              <div class="field"><label>Idade real</label><input type="number" id="f-idade" placeholder="Ex: 18" min="13" max="60" /></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Nick no servidor</label><input type="text" id="f-nick" placeholder="SeuNick" /></div>
+              <div class="field"><label>Discord</label><input type="text" id="f-discord" placeholder="usuario#0000" /></div>
+            </div>
+            <div class="field" style="margin-top:1rem"><label>Experiência com roleplay</label><textarea id="f-exp" placeholder="Descreva sua experiência com roleplay (servidores anteriores, tempo de jogo, etc.)"></textarea></div>
+            <div class="field"><label>Por que quer entrar na PM?</label><textarea id="f-motivo" placeholder="Explique sua motivação para ingressar na Polícia Militar..."></textarea></div>
+            <div class="field"><label>Disponibilidade de horário</label><input type="text" id="f-horario" placeholder="Ex: Noite e fins de semana" /></div>
+            <button class="btn-primary" style="margin-top:1rem" onclick="submitForm()">ENVIAR CANDIDATURA</button>
+          </div>
+          <div class="form-success" id="form-success">
+            <p>✔ CANDIDATURA ENVIADA<br><br>Sua ficha foi recebida com sucesso.<br>O Comando irá analisar e entrar em contato via Discord.<br><br>Aguarde.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGRAS GERAIS -->
+  <div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="pub-section">
+      <div class="pub-section-title">REGRAS <span>GERAIS</span></div>
+      <div class="pub-section-sub">// NORMAS DE CONDUTA DO SERVIDOR</div>
+      <div class="pub-divider"></div>
+      <div class="pub-rules-grid">
+        <div class="pub-rule-item"><div class="pub-rule-num">01</div><div class="pub-rule-text"><strong>Respeito mútuo:</strong> Todos os jogadores devem tratar uns aos outros com respeito dentro e fora do personagem.</div></div>
+        <div class="pub-rule-item"><div class="pub-rule-num">02</div><div class="pub-rule-text"><strong>Roleplay:</strong> Mantenha o personagem em todo momento. Saídas de personagem (OOC) só são permitidas em situações necessárias.</div></div>
+        <div class="pub-rule-item"><div class="pub-rule-num">03</div><div class="pub-rule-text"><strong>Metagaming:</strong> É proibido usar informações obtidas fora do jogo dentro do roleplay.</div></div>
+        <div class="pub-rule-item"><div class="pub-rule-num">04</div><div class="pub-rule-text"><strong>Powergaming:</strong> É proibido forçar ações em outros jogadores sem dar chance de reação.</div></div>
+        <div class="pub-rule-item"><div class="pub-rule-num">05</div><div class="pub-rule-text"><strong>Exploração de bugs:</strong> Qualquer bug encontrado deve ser reportado à administração imediatamente.</div></div>
+        <div class="pub-rule-item"><div class="pub-rule-num">06</div><div class="pub-rule-text"><strong>Uso de força:</strong> A força deve ser proporcional à situação. Violência excessiva é passível de punição.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA FINAL -->
+  <div class="pub-cta">
+    <h2>PRONTO PARA <span>SERVIR?</span></h2>
+    <p>Junte-se à Polícia Militar do Legacy e faça parte de uma das corporações mais respeitadas do servidor.</p>
+    <div class="pub-cta-btns">
+      <button class="btn-pub-primary" onclick="openAuthModal('register')">CRIAR CONTA AGORA</button>
+      <button class="btn-pub-secondary" onclick="openAuthModal('login')">JÁ TENHO CONTA</button>
+    </div>
+  </div>
+
+  <div class="pub-footer">PM LEGACY — PORTAL OFICIAL — SERVIDOR LEGACY — TODOS OS DIREITOS RESERVADOS</div>
+</div>
+
+<!-- MODAL DE AUTENTICAÇÃO -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal auth-modal">
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <div style="font-family:var(--font-head);font-size:28px;letter-spacing:4px;color:var(--gold)">PM LEGACY</div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;margin-top:2px">PORTAL RESTRITO</div>
+    </div>
+    <div class="auth-modal-switch">
+      <button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login',this)">ENTRAR</button>
+      <button class="auth-tab" id="auth-tab-register" onclick="switchAuthTab('register',this)">CRIAR CONTA</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="auth-panel active" id="auth-login-panel">
       <div class="login-error" id="login-error">CREDENCIAIS INVÁLIDAS — ACESSO NEGADO</div>
-      <div class="field">
-        <label>Usuário</label>
-        <input type="text" id="login-user" placeholder="seu.usuario" autocomplete="off" />
-      </div>
-      <div class="field">
-        <label>Senha</label>
-        <input type="password" id="login-pass" placeholder="••••••••" />
-      </div>
+      <div class="login-error" id="login-pending" style="background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.4);color:var(--gold);">CONTA AGUARDANDO APROVAÇÃO DO COMANDO</div>
+      <div class="field"><label>Usuário</label><input type="text" id="login-user" placeholder="seu.usuario" autocomplete="off" /></div>
+      <div class="field"><label>Senha</label><input type="password" id="login-pass" placeholder="••••••••" /></div>
       <button class="btn-primary" onclick="doLogin()">ACESSAR PORTAL</button>
-      <div class="login-info">
-        Acesso restrito a membros autorizados.<br>
-        Solicite credenciais ao Comando da PM.
+      <div class="login-info">Acesso restrito a membros autorizados.</div>
+    </div>
+
+    <!-- REGISTRO -->
+    <div class="auth-panel" id="auth-register-panel">
+      <div class="register-success" id="register-success">
+        ✔ SOLICITAÇÃO ENVIADA<br><br>
+        Sua conta aguarda aprovação do Comando.<br>Você será notificado em breve.
+      </div>
+      <div id="register-fields">
+        <div class="login-error" id="register-error"></div>
+        <div class="field"><label>Usuário</label><input type="text" id="reg-user" placeholder="nome.sobrenome" autocomplete="off" /></div>
+        <div class="field"><label>Senha</label><input type="password" id="reg-pass" placeholder="Mínimo 4 caracteres" /></div>
+        <div class="field"><label>Confirmar senha</label><input type="password" id="reg-pass2" placeholder="Repita a senha" /></div>
+        <div class="field"><label>Nick no servidor</label><input type="text" id="reg-nick" placeholder="SeuNick" /></div>
+        <button class="btn-primary" onclick="doRegister()">SOLICITAR ACESSO</button>
+        <div class="login-info">Sua conta ficará pendente até aprovação do Comando.</div>
       </div>
     </div>
+
+    <button class="btn-secondary" style="margin-top:1rem;width:100%" onclick="closeAuthModal()">FECHAR</button>
   </div>
 </div>
 
@@ -267,7 +623,6 @@
       <button class="nav-link active" onclick="showPage('home')">Início</button>
       <button class="nav-link" onclick="showPage('ranking')">Efetivo</button>
       <button class="nav-link" onclick="showPage('rules')">Regulamentos</button>
-      <button class="nav-link" onclick="showPage('recruit')">Recrutamento</button>
       <button class="nav-link" id="nav-reports" onclick="showPage('reports')" style="display:none">Relatórios</button>
       <button class="nav-link admin-only" onclick="showPage('admin')" style="display:none">Admin</button>
     </div>
@@ -281,25 +636,61 @@
 
 <!-- HOME PAGE -->
 <div id="page-home" class="page">
-  <div class="hero">
-    <div class="hero-left">
-      <div class="hero-kicker">// SERVIDOR LEGACY — CORPORAÇÃO OFICIAL</div>
-      <div class="hero-title">POLÍCIA<br><span>MILITAR</span></div>
-      <div class="hero-divider"></div>
-      <p class="hero-sub">Servir e proteger é nossa missão. A PM Legacy mantém a ordem e a lei no servidor, garantindo uma experiência de roleplay justa e imersiva para todos os cidadãos.</p>
-      <div class="hero-stats">
-        <div class="stat-box"><div class="stat-num" id="stat-total">0</div><div class="stat-label">EFETIVO</div></div>
-        <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">PATENTES</div></div>
-        <div class="stat-box"><div class="stat-num">24/7</div><div class="stat-label">OPERAÇÃO</div></div>
+
+  <!-- HERO + BOLETIM -->
+  <div class="pub-hero">
+    <div class="pub-hero-bg"></div>
+    <div class="pub-hero-grid"></div>
+    <div style="max-width:1100px;margin:0 auto;padding:8rem 2rem 4rem;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%">
+      <div>
+        <div class="pub-hero-kicker">// SERVIDOR LEGACY — CORPORAÇÃO OFICIAL</div>
+        <div class="pub-hero-title">POLÍCIA<br><span>MILITAR</span><br>LEGACY</div>
+        <p class="pub-hero-desc">Servir e proteger é nossa missão. A PM Legacy mantém a ordem e a lei no servidor, garantindo uma experiência de roleplay justa e imersiva para todos os cidadãos.</p>
+        <div style="display:inline-flex;align-items:center;gap:16px;margin-top:1rem;padding:14px 24px;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:4px;">
+          <span style="font-family:var(--font-head);font-size:48px;color:var(--gold);letter-spacing:2px;line-height:1" id="stat-total">—</span>
+          <div>
+            <div style="font-family:var(--font-head);font-size:16px;letter-spacing:3px;color:var(--text)">POLICIAIS</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;">NO EFETIVO ATIVO</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:1rem">// BOLETIM DE SERVIÇO</div>
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <div style="display:flex;background:rgba(10,10,11,0.7);border:1px solid var(--border2)">
+            <div style="width:3px;background:var(--gold);flex-shrink:0"></div>
+            <div style="padding:0.9rem 1.1rem;flex:1">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;margin-bottom:4px">AVISO GERAL</div>
+              <div style="font-size:13px;color:var(--text);line-height:1.6">Bem-vindo ao portal oficial da Polícia Militar do Legacy. Mantenha suas informações atualizadas.</div>
+            </div>
+          </div>
+          <div style="display:flex;background:rgba(10,10,11,0.7);border:1px solid var(--border2);border-top:none">
+            <div style="width:3px;background:var(--gold);flex-shrink:0"></div>
+            <div style="padding:0.9rem 1.1rem;flex:1">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;margin-bottom:4px">REGIMENTO INTERNO</div>
+              <div style="font-size:13px;color:var(--text);line-height:1.6">O regimento interno está em elaboração. Em breve disponível na aba de Regulamentos.</div>
+            </div>
+          </div>
+          <div style="display:flex;background:rgba(10,10,11,0.7);border:1px solid var(--border2);border-top:none">
+            <div style="width:3px;background:var(--gold);flex-shrink:0"></div>
+            <div style="padding:0.9rem 1.1rem;flex:1">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:2px;margin-bottom:4px">RECRUTAMENTO</div>
+              <div style="font-size:13px;color:var(--text);line-height:1.6">Candidaturas abertas. Acesse a página pública do site para enviar sua ficha de recrutamento.</div>
+            </div>
+          </div>
+          <div style="display:flex;background:rgba(10,10,11,0.7);border:1px solid rgba(192,57,43,0.4);border-top:none">
+            <div style="width:3px;background:var(--red);flex-shrink:0"></div>
+            <div style="padding:0.9rem 1.1rem;flex:1">
+              <div style="font-family:var(--font-mono);font-size:10px;color:rgba(220,80,70,0.9);letter-spacing:2px;margin-bottom:4px">CONDUTA</div>
+              <div style="font-size:13px;color:var(--text);line-height:1.6">Todo policial deve manter postura profissional dentro e fora do servidor. Infrações serão apuradas pelo Comando.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="hero-right">
-      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--text3);padding:10px 0 6px;">// BOLETIM DE SERVIÇO</div>
-      <div class="alert-box"><div class="alert-time">AVISO GERAL</div><div class="alert-text">Bem-vindo ao portal oficial da PM Legacy. Mantenha suas informações atualizadas.</div></div>
-      <div class="alert-box"><div class="alert-time">REGIMENTO</div><div class="alert-text">O regimento interno está em elaboração. Em breve disponível na aba Regulamentos.</div></div>
-      <div class="alert-box red"><div class="alert-time">RECRUTAMENTO</div><div class="alert-text">Candidaturas abertas. Acesse a aba Recrutamento para se inscrever.</div></div>
-    </div>
   </div>
+
+  <!-- CARDS DE NAVEGAÇÃO -->
   <div class="home-grid">
     <div class="home-card" onclick="showPage('ranking')">
       <div class="home-card-icon">🪖</div>
@@ -310,11 +701,6 @@
       <div class="home-card-icon">📋</div>
       <h3>REGULAMENTOS</h3>
       <p>Regras do servidor e regimento interno da Polícia Militar do Legacy.</p>
-    </div>
-    <div class="home-card" onclick="showPage('recruit')">
-      <div class="home-card-icon">🎯</div>
-      <h3>RECRUTAMENTO</h3>
-      <p>Quer fazer parte da PM? Preencha o formulário e aguarde avaliação do Comando.</p>
     </div>
     <div class="home-card" onclick="showPage('reports')" id="home-card-reports" style="display:none">
       <div class="home-card-icon">📝</div>
@@ -411,52 +797,6 @@
           <div class="rules-placeholder">
             <p>⚙ REGIMENTO EM ELABORAÇÃO<br><br>O regimento interno da Polícia Militar do Legacy<br>está sendo desenvolvido pelo Comando.<br><br>Em breve disponível nesta seção.</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- RECRUTAMENTO PAGE -->
-<div id="page-recruit" class="page">
-  <div class="section">
-    <div class="section-head">
-      <h2>RECRUTAMENTO</h2>
-      <div class="line"></div>
-      <span class="tag">// INGRESSO NA CORPORAÇÃO</span>
-    </div>
-    <div class="recruit-layout">
-      <div class="recruit-info">
-        <h3>JUNTE-SE À PM LEGACY</h3>
-        <p>A Polícia Militar do Legacy busca candidatos comprometidos com o roleplay de qualidade, disciplina e trabalho em equipe.</p>
-        <p>Preencha o formulário ao lado. Sua candidatura será avaliada pelo Comando e você receberá um retorno.</p>
-        <ul class="req-list">
-          <li>Ter no mínimo 13 anos de idade</li>
-          <li>Conta ativa no servidor Legacy</li>
-          <li>Conhecimento básico de roleplay</li>
-          <li>Disponibilidade para treinamentos</li>
-          <li>Microfone funcional</li>
-          <li>Comprometimento com a corporação</li>
-        </ul>
-      </div>
-      <div class="recruit-form">
-        <h3>FICHA DE CANDIDATURA</h3>
-        <div id="form-fields">
-          <div class="form-row">
-            <div class="field"><label>Nome do personagem</label><input type="text" id="f-nome" placeholder="Nome Sobrenome" /></div>
-            <div class="field"><label>Idade real</label><input type="number" id="f-idade" placeholder="Ex: 18" min="13" max="60" /></div>
-          </div>
-          <div class="form-row">
-            <div class="field"><label>Nick no servidor</label><input type="text" id="f-nick" placeholder="SeuNick" /></div>
-            <div class="field"><label>Discord</label><input type="text" id="f-discord" placeholder="usuario#0000" /></div>
-          </div>
-          <div class="field" style="margin-top:1rem"><label>Experiência com roleplay</label><textarea id="f-exp" placeholder="Descreva sua experiência com roleplay (servidores anteriores, tempo de jogo, etc.)"></textarea></div>
-          <div class="field"><label>Por que quer entrar na PM?</label><textarea id="f-motivo" placeholder="Explique sua motivação para ingressar na Polícia Militar..."></textarea></div>
-          <div class="field"><label>Disponibilidade de horário</label><input type="text" id="f-horario" placeholder="Ex: Noite e fins de semana" /></div>
-          <button class="btn-primary" style="margin-top:1rem" onclick="submitForm()">ENVIAR CANDIDATURA</button>
-        </div>
-        <div class="form-success" id="form-success">
-          <p>✔ CANDIDATURA ENVIADA<br><br>Sua ficha foi recebida com sucesso.<br>O Comando irá analisar e entrar em contato via Discord.<br><br>Aguarde.</p>
         </div>
       </div>
     </div>
@@ -663,14 +1003,45 @@ if (!getData('pm_pending', null)) setData('pm_pending', []);
 // ===================== AUTH =====================
 let currentUser = null;
 
+function openAuthModal(tab) {
+  document.getElementById('auth-modal').classList.add('open');
+  switchAuthTab(tab, document.getElementById('auth-tab-' + tab));
+}
+function closeAuthModal() {
+  document.getElementById('auth-modal').classList.remove('open');
+}
+function switchAuthTab(tab, btn) {
+  document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('auth-' + tab + '-panel').classList.add('active');
+  document.getElementById('login-error').style.display = 'none';
+  document.getElementById('login-pending').style.display = 'none';
+}
+
+function switchLoginTab(tab, btn) {
+  switchAuthTab(tab, btn);
+}
+
 function doLogin() {
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value;
   const users = getData('pm_users', []);
-  const found = users.find(x => x.user === u && x.pass === p);
+  const pending = getData('pm_pending', []);
   const err = document.getElementById('login-error');
-  if (!found) { err.style.display = 'block'; return; }
+  const pend = document.getElementById('login-pending');
   err.style.display = 'none';
+  pend.style.display = 'none';
+
+  // checar se está pendente
+  if (pending.find(x => x.user === u && x.pass === p)) {
+    pend.style.display = 'block';
+    return;
+  }
+
+  const found = users.find(x => x.user === u && x.pass === p);
+  if (!found) { err.style.display = 'block'; return; }
+
   currentUser = found;
   document.getElementById('nav-username').textContent = found.user;
   document.getElementById('nav-rank').textContent = found.rank;
@@ -680,14 +1051,39 @@ function doLogin() {
     document.getElementById('admin-add-btn').style.display = '';
     document.getElementById('actions-col').style.display = '';
   }
-  // mostrar relatórios para quem pode avaliar
   if (canReport(found.rank) || found.role === 'admin') {
     document.getElementById('nav-reports').style.display = '';
     document.getElementById('home-card-reports').style.display = '';
   }
-  document.getElementById('page-login').classList.remove('active');
+  closeAuthModal();
+  document.getElementById('page-public').classList.remove('active');
   showPage('home');
   updateStats();
+}
+
+function doRegister() {
+  const user = document.getElementById('reg-user').value.trim();
+  const pass = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  const nick = document.getElementById('reg-nick').value.trim();
+  const err = document.getElementById('register-error');
+  err.style.display = 'none';
+
+  if (!user || !pass || !nick) { err.textContent = 'PREENCHA TODOS OS CAMPOS'; err.style.display = 'block'; return; }
+  if (pass.length < 4) { err.textContent = 'SENHA MUITO CURTA — MÍNIMO 4 CARACTERES'; err.style.display = 'block'; return; }
+  if (pass !== pass2) { err.textContent = 'AS SENHAS NÃO COINCIDEM'; err.style.display = 'block'; return; }
+
+  const users = getData('pm_users', []);
+  const pending = getData('pm_pending', []);
+  if (users.find(x => x.user === user) || pending.find(x => x.user === user)) {
+    err.textContent = 'ESTE USUÁRIO JÁ EXISTE'; err.style.display = 'block'; return;
+  }
+
+  pending.push({ user, pass, nick, date: new Date().toLocaleDateString('pt-BR'), dateISO: new Date().toISOString() });
+  setData('pm_pending', pending);
+
+  document.getElementById('register-fields').style.display = 'none';
+  document.getElementById('register-success').style.display = 'block';
 }
 
 function doLogout() {
@@ -696,9 +1092,15 @@ function doLogout() {
   document.getElementById('nav-reports').style.display = 'none';
   document.getElementById('home-card-reports').style.display = 'none';
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-login').classList.add('active');
+  document.getElementById('page-public').classList.add('active');
   document.getElementById('login-user').value = '';
   document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').style.display = 'none';
+  document.getElementById('login-pending').style.display = 'none';
+  document.getElementById('register-fields').style.display = '';
+  document.getElementById('register-success').style.display = 'none';
+  ['reg-user','reg-pass','reg-pass2','reg-nick'].forEach(id => document.getElementById(id).value = '');
+  window.scrollTo(0,0);
 }
 
 document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
@@ -763,8 +1165,15 @@ function renderRanking(f) {
 }
 
 function updateStats() {
-  document.getElementById('stat-total').textContent = getData('pm_officers', []).length;
+  const total = getData('pm_officers', []).length;
+  document.getElementById('stat-total').textContent = total;
+  const pub = document.getElementById('pub-stat-total');
+  if (pub) pub.textContent = total;
 }
+
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+updateStats();
 
 function openAddModal() { document.getElementById('add-modal').classList.add('open'); }
 function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
@@ -1068,9 +1477,12 @@ function renderAdmin() {
   noPending.style.display = 'none';
   body.innerHTML = pending.map(u => `
     <tr>
-      <td style="font-family:var(--font-mono)">${u.user}</td>
+      <td style="font-family:var(--font-mono)">${u.user}<br><span style="color:var(--text3);font-size:11px">Nick: ${u.nick || '—'}</span></td>
       <td style="font-family:var(--font-mono);font-size:12px;color:var(--text3)">${u.date}</td>
       <td>
+        <select id="approve-rank-${u.user}" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-family:var(--font-mono);font-size:11px;padding:4px 8px;border-radius:3px;margin-right:6px;cursor:pointer">
+          <option>Soldado</option><option>Cabo</option><option>3° Sargento</option><option>2° Sargento</option><option>1° Sargento</option><option>Subtenente</option><option>2° Tenente</option><option>1° Tenente</option><option>Capitão</option><option>Major</option><option>Tenente-Coronel</option><option>Coronel</option>
+        </select>
         <button class="btn-approve" onclick="approveUser('${u.user}')">APROVAR</button>
         <button class="btn-reject" onclick="rejectUser('${u.user}')">REJEITAR</button>
       </td>
@@ -1082,8 +1494,10 @@ function approveUser(user) {
   let pending = getData('pm_pending', []);
   const u = pending.find(x => x.user === user);
   if (!u) return;
+  const rankEl = document.getElementById('approve-rank-' + user);
+  const rank = rankEl ? rankEl.value : 'Soldado';
   const users = getData('pm_users', []);
-  users.push({ user: u.user, pass: u.pass, rank: 'Soldado', role: 'membro' });
+  users.push({ user: u.user, pass: u.pass, rank, role: 'membro' });
   setData('pm_users', users);
   setData('pm_pending', pending.filter(x => x.user !== user));
   renderAdmin();
